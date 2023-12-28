@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button onclick="verifyMobile()">Verify Mobile</button>
+    <button onclick="signup()">Sign up</button>
+    <button onclick="signin()">Sign in</button>
+    <button onclick="handleUpdate()">update user</button>
+    <form action="">
+        <input type="file">
+        <label for="">fileupload</label>
+    </form>
+    <script>
+        async function verifyMobile() {
+            const formData = {
+                mobileNumber: "1234567890",
+            };
+
+            try {
+                const response = await fetch("http://localhost:8080/api/auth/verifyMobile", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (!response.ok) {
+                    console.log(response)
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log("Response data:", data);
+            } catch (error) {
+                console.error("Error:", error.message);
+            }
+        }
+        async function signin() {
+            const formData = {
+                username: "Ali Khan",
+                email: "aliamankhan96@gmail.com",
+                password: "tespword"
+            };
+
+            try {
+                const response = await fetch("http://localhost:8080/api/auth/signin", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log("Response data:", data);
+            } catch (error) {
+                console.error("Error:", error.message);
+            }
+        }
+
+        async function signup() {
+            const formData = {
+                username: "Ali Khan",
+                email: "aliamankhan96@gmail.com",
+                password: "tespword"
+            };
+
+            try {
+                const response = await fetch("http://localhost:8080/api/auth/signup", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (!response.ok) {
+                    console.log(response)
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log("Response data:", data);
+            } catch (error) {
+                console.error("Error:", error.message);
+            }
+        }
+
+         // Function to handle the button click and trigger the update
+    async function handleUpdate() {
+        const userId = '658c0499b60261687f300088'; // Replace with the actual user ID
+        const updateData = {
+            // Replace with the fields you want to update and their new values
+            // For example:
+            username: 'new_username',
+            email: 'new_email@example.com',
+            password: 'ALIupdated',
+        };
+
+        try {
+            // Make a PUT request to your API endpoint
+            const response = await fetch(`http://localhost:8080/api/auth/updateUser/${userId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OGMwNDk5YjYwMjYxNjg3ZjMwMDA4OCIsImlhdCI6MTcwMzY3NTA2NCwiZXhwIjoxNzAzNzYxNDY0fQ.LHAOkoATTnCSys_2n0SLPqBI_1S-cBnm7Yd4k2nR2Ks', // Replace with the actual user token
+                },
+                body: JSON.stringify(updateData),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(`Update failed: ${errorData.message}`);
+            }
+
+            const updatedUser = await response.json();
+            console.log('User Updated Successfully:', updatedUser);
+        } catch (error) {
+            console.error('Error updating user:', error.message);
+        }
+    }
+
+    </script>
+</body>
+</html>
